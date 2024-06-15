@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8266cedb-6b8d-496d-bc64-41bfd6e987d5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/tao_bang_don_gian.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Tao_bang_nang_cao/Tao_bang_nang_cao_lich.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../ss4_Git &amp; HTML/bai_tap/Survey_khach_hang.html" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
@@ -28,6 +28,9 @@
   &quot;associatedIndex&quot;: 8
 }</component>
   <component name="ProjectId" id="2hsVdy7ePhhnwQygcux9TTXRB4E" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -61,7 +64,7 @@
       <option name="presentableId" value="Default" />
       <updated>1718382863038</updated>
       <workItem from="1718382864055" duration="291000" />
-      <workItem from="1718417721374" duration="3326000" />
+      <workItem from="1718417721374" duration="7166000" />
     </task>
     <servers />
   </component>
