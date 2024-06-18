@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ung_dung_may_tinh</title>
+</head>
+<body>
+<table>
+    <tr>
+        <th colspan="2"><b>Caculator</b></th>
+    </tr>
+    <tr>
+        <td colspan="2"><input type="text" id="x"></td>
+        <td colspan="2"><input type="text" id="y"></td>
+    </tr>
+    <tr>
+        <td><input onclick="Addition()" type="button" value="Addition(+)"></td>
+        <td><input onclick="Sudtraction()" type="button" value="Sudtraction(-)"></td>
+        <td><input onclick="Multiplication()" type="button" value="Multiplication(X)"></td>
+        <td><input onclick="Division()" type="button" value="Division(/)"></td>
+    </tr>
+</table>
+<script>
+    function Addition(){
+        let x=parseInt(document.getElementById("x").value);
+        let y=parseInt(document.getElementById("y").value);
+        let result=0;
+        result=x+y
+        alert(result)
+    }
+    function Sudtraction(){
+        let x=parseInt(document.getElementById("x").value);
+        let y=parseInt(document.getElementById("y").value);
+        let result=0;
+        result=x-y
+        alert(result)
+    }
+    function Multiplication(){
+        let x=parseInt(document.getElementById("x").value);
+        let y=parseInt(document.getElementById("y").value);
+        let result=0;
+        result=x*y
+        alert(result)
+    }
+    function Division(){
+        let x=parseInt(document.getElementById("x").value);
+        let y=parseInt(document.getElementById("y").value);
+        let result=0;
+        if(y != 0){
+            result=x/y
+        }
+        else {
+            result="Lỗi"
+        }
+        alert(result)
+    }
+</script>
+</body>
+</html>
