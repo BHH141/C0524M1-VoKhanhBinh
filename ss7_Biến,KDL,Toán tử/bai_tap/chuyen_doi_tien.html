@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>chuyen_doi_tien</title>
+</head>
+<body>
+<table>
+    <tr>
+        <th><b>Amount</b></th>
+        <th><b>From currency</b></th>
+        <th><b>To currency</b></th>
+        <th></th>
+    </tr>
+    <tr>
+        <td><input type="text" id="demo"></td>
+        <td>
+            <select id="from">
+                <option>USD</option>
+                <option>VietNam</option>
+            </select>
+        </td>
+        <td>
+            <select id="to">
+                <option>USD</option>
+                <option>VietNam</option>
+            </select>
+        </td>
+        <td>
+            <input onclick="do_sth()" type="button" value="Convert">
+        </td>
+    </tr>
+</table>
+<script>
+     function do_sth() {
+         let x = document.getElementById("demo").value;
+         let y = document.getElementById("from").value;
+         let z = document.getElementById("to").value;
+         let result = 0;
+         if (y === "USD" && z === "VietNam") {
+             result = x * 23000;
+         } else if (y === "VietNam" && z === "USD") {
+             result = x / 23000;
+         } else {
+             result = x;
+         }
+         alert(result)
+     }
+</script>
+</body>
+</html>
