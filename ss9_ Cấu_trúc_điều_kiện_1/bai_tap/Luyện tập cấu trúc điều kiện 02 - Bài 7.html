@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>luyen_tap_cau_truc_dieu_kien_2_7</title>
+</head>
+<body>
+<h3>ax^2+bx+c=0</h3>
+<h3>Nhập a:</h3>
+<input type="text" id="a"><br>
+<h3>Nhập b:</h3>
+<input type="text" id="b"><br>
+<h3>Nhập c:</h3>
+<input type="text" id="c"><br>
+<input type="button" onclick="solve()" value="Hoàn thành">
+<script>
+    function solve(){
+        let a=parseFloat(document.getElementById("a").value);
+        let b=parseFloat(document.getElementById("b").value);
+        let c=parseFloat(document.getElementById("c").value);
+        let delta=b**2-4*a*c;
+        if (delta<0){
+            alert("Phương trình vô nghiệm");
+        }else if (delta==0){
+            alert("phương trình có nghiệm kép x1=x2="+(-b/2*a));
+        }else {
+            alert("phương trình có 2 nghiệm phân biệt x1="+((-b+delta**0.5)/(2*a))+", x2="+((-b-delta**0.5)/(2*a)));
+        }
+    }
+</script>
+</body>
+</html>

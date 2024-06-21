@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>luyen_tap_cau_truc_dieu_kien_2_8</title>
+</head>
+<body>
+<h3>Nhập vào 1 số: </h3>
+<input type="text" id="num"><br>
+<input type="button" onclick="age()" value="Hoàn thành">
+<script>
+    function age(){
+        let num=parseFloat(document.getElementById("num").value);
+        if (num%1==0){
+            if (num<120 && num>0){
+                alert(num+" là tuổi một người");
+            }else {
+                alert(num+" không phải là tuổi một người");
+            }
+        }else {
+            alert(num+" không phải là tuổi một người");
+        }
+    }
+</script>
+</body>
+</html>

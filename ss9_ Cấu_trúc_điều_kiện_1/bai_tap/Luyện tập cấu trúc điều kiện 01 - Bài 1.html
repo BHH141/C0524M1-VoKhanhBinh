@@ -6,13 +6,13 @@
 </head>
 <body>
 <script>
-    let a=parseFloat(prompt("Nhập vào a: "));
-    let b=parseFloat(prompt("Nhập vào b: "));
-    if (b !== 0){
-        if (a%b==0){
-            alert(a+" chia hết cho "+b);
+    let edge1=parseFloat(prompt("Nhập vào a: "));
+    let edge2=parseFloat(prompt("Nhập vào b: "));
+    if (edge2 !== 0){
+        if (edge1%edge2==0){
+            alert(edge1+" chia hết cho "+edge2);
         }else {
-            alert(a +" không chia hết cho "+b);
+            alert(edge1 +" không chia hết cho "+edge2);
         }
     }else {
         alert("b phải khác 0");

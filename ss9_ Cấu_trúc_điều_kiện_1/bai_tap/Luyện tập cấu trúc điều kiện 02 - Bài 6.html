@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>luyen_tap_cau_truc_dieu_kien_2_6</title>
+</head>
+<body>
+<h3>ax+b=0</h3>
+<h3>Nhập a:</h3>
+<input type="text" id="a"><br>
+<h3>Nhập b:</h3>
+<input type="text" id="b"><br>
+<input type="button" onclick="solve()" value="Hoàn thành">
+<script>
+    function solve(){
+        let a = parseFloat(document.getElementById("a").value);
+        let b = parseFloat(document.getElementById("b").value);
+        let x = -b / a;
+        if (a !== 0) {
+            alert("x=" + x);
+        }else {
+            alert("Nhập sai");
+        }
+    }
+</script>
+</body>
+</html>

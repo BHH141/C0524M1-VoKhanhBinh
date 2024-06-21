@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>luyen_tap_cau_truc_dieu_kien_2_9</title>
+</head>
+<body>
+<h3>Nhập cạnh 1:</h3>
+<input type="text" id="1"><br>
+<h3>Nhập cạnh 2:</h3>
+<input type="text" id="2"><br>
+<h3>Nhập cạnh 1:</h3>
+<input type="text" id="3"><br>
+<input type="button" onclick="triangle()" value="Hoàn thành">
+<script>
+    function triangle(){
+        let edge1=parseFloat(document.getElementById("1").value);
+        let edge2=parseFloat(document.getElementById("2").value);
+        let edge3=parseFloat(document.getElementById("3").value);
+        if (edge1>0 && edge2>0 && edge3>0){
+            if (edge1+edge2>edge3 && edge1+edge3>edge2 && edge2+edge3>edge1){
+                alert(edge1+","+edge2+","+edge3+" là 3 cạnh của 1 tam giac");
+            }else {
+                alert(edge1+","+edge2+","+edge3+" không là 3 cạnh của 1 tam giac");
+            }
+        }else{
+            alert(edge1+","+edge2+","+edge3+" không là 3 cạnh của 1 tam giac");
+        }
+    }
+</script>
+</body>
+</html>
