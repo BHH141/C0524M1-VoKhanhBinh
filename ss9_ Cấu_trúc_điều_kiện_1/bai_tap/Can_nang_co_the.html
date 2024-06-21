@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Can_nang_co_the</title>
+</head>
+<body>
+<h3>Enter weight (kg)</h3>
+<input type="text" id="weight">
+<h3>Enter height(m)</h3>
+<input type="text" id="height"><br>
+<input type="button" onclick="solve()" value="Hoàn thành">
+<script>
+    function solve() {
+        let weight = parseFloat(document.getElementById("weight").value);
+        let height = parseFloat(document.getElementById("height").value);
+        let BMI = weight / (height ^ 2)
+        if (BMI < 18.5) {
+            alert("Underweight")
+        } else if (BMI < 25) {
+            alert("Normal")
+        } else if (BMI < 30) {
+            alert("Overweight")
+        } else {
+            alert("Obese")
+        }
+    }
+</script>
+</body>
+</html>
