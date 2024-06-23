@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>C to F</title>
+</head>
+<body>
+<a>Nhập C</a><br>
+<input type="text" id="C"><br>
+<input type="button" value="Hoàn thành" onclick="solve()">
+<script>
+    function solve() {
+        let C = +document.getElementById("C").value;
+        let F = C * 9 / 5 + 32;
+        alert(C + "độ C=" + F + " độ F");
+    }
+</script>
+</body>
+</html>
