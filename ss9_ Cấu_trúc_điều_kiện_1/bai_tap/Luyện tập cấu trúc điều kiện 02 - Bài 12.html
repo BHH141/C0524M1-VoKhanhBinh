@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    let debt=parseFloat(prompt("Nhập số tiền nợ"));
+    let month=parseInt(prompt("Nhập số tháng: "));
+    let percent=parseFloat(prompt("Nhập lãi xuất (%): "));
+    let interest=(debt*percent/100)*month;
+    alert("Tiền cần trả là: "+(debt+interest));
+</script>
+</body>
+</html>
