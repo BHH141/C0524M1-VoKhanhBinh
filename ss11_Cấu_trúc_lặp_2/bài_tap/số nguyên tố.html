@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SO_nguyen_to</title>
+</head>
+<body>
+<script>
+    let so=2;
+    let dem=0;
+    while(dem<20){
+        let dem1=0;
+        for(let thu=1;thu<=so;thu++){
+            if(so%thu===0){
+                dem1++
+            }
+        }
+        if(dem1===2){
+            document.write(so+"<br>")
+            dem++
+        }
+        so++
+    }
+</script>
+</body>
+</html>

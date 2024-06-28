@@ -1,10 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Nam_nhuan</title>
 </head>
 <body>
-$END$
+    <form>
+        Nhập vào năm
+        <input type="text" id="year">
+        <input onclick="do_sth()" type="button" value="Hoàn tất">
+    </form>
+    <script>
+        function do_sth(){
+            let year=parseInt(document.getElementById("year").value)
+            if (year %4 ==0){
+                if(year %100 ==0){
+                    if(year %400 ==0){
+                        alert(year+" là Năm nhuận");
+                    }else {
+                        alert(year+" là Năm không nhuận");
+                    }
+                }else {
+                    alert(year+" là Năm nhuận");
+                }
+            }else {
+                alert(year+" là năm không nhuận")
+            }
+        }
+    </script>
 </body>
 </html>

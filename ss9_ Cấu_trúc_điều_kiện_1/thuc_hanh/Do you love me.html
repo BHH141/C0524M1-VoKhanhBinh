@@ -1,10 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Do u love me</title>
 </head>
 <body>
-$END$
+<h1>Do you love me ???</h1>
+<input type="button" value="yes" onclick="yes()">
+<input type="button" value="no" onmouseover="move()" id="no">
+<script>
+    function yes(){
+        alert("<3")
+    }
+    function init() {
+        but = document.getElementById("no");
+        but.style.position = 'relative';
+        but.style.left = '100px';
+    }
+    window.onload=init;
+    function move(){
+        let button=document.getElementById("no");
+        let hei=Math.random()*(window.innerHeight-100);
+        let wed=Math.random()*(window.innerWidth-30);
+        button.style.top=parseInt(button.style.top)+hei+"px";
+        button.style.left=parseInt(button.style.left)+wed+"px";
+    }
+</script>
 </body>
 </html>

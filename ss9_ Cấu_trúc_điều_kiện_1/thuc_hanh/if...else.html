@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>if/else</title>
+</head>
+<body>
+<form>
+  What is the “official” name of JavaScript?
+  <input type="text" id="answer">
+  <input type="button" onclick="do_sth()" value="Hoàn thành">
+</form>
+<script>
+  function do_sth() {
+    let a = document.getElementById("answer").value
+    if (a == "ECMAScript") {
+      alert("Right!")
+    } else {
+      alert("Didn’t know? ECMAScript!")
+    }
+  }
+</script>
+</body>
+</html>
