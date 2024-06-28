@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<a>Nhập tiền nợ</a>
+<input type="text" id="money">
+<a>Nhập số tháng vay</a>
+<input type="text" id="month">
+<a>Nhập lãi xuất (%)</a>
+<input type="text" id="lai">
+<input type="button" value="Hoàn thành" onclick="lai()">
+<script>
+    function lai() {
+        let lai = parseFloat(document.getElementById("lai").value);
+        let money = parseFloat(document.getElementById("money").value);
+        let month = parseInt(document.getElementById("month").value);
+        for (let count = 1; count <= month; count++) {
+            let money1 = money
+            money1 = (money * lai) / 100;
+            money += money1
+        }
+        alert("Tiền nợ là:" + money)
+    }
+</script>
+</body>
+</html>

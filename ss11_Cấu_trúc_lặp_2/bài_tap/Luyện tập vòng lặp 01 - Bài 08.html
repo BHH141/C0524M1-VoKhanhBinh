@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="button" onclick="play()" value="Chơi">
+<script>
+    let num=Math.random()*21;
+    function play(){
+        for(let time=1;time<=3;time++) {
+            let input = parseInt(prompt("Nhập số"));
+            if (num > input) {
+                alert("Số cần đoán lớn hơn")
+            }else if(num<input){
+                alert("Số cần đoán bé hơn")
+            }else{
+                alert("Win")
+                break;
+            }
+        }
+    }
+</script>
+</body>
+</html>
