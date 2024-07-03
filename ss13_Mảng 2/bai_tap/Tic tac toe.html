@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p id="player1">player 1 (X):turn</p>
+<p id="player2">player 2 (O):</p>
+<p id="main"></p>
+<script>
+    let arr=[];
+    for (let i = 0; i < 3; i++) {
+        let row = [];
+        for (let j = 0; j < 3; j++) {
+            row.push(" ");
+        }
+        arr.push(row);
+    }
+    let strtable = "<table border='1' cellspacing='0'>";
+    for (let i = 0; i < 3; i++) {
+        strtable += "<tr>";
+        for (let j = 0; j < 3; j++) {
+            strtable += "<td id='" + i + "" + j + "' width='20px' height='20px' onclick='checkid(this); tictactoe();finish()'></td>";
+        }
+        strtable += "</tr>";
+    }
+    strtable += "</table>";
+    document.getElementById("main").innerHTML = strtable;
+    function finish(){
+        for(let i=0;i<3;i++){
+            if(arr[i][0] === arr[i][1] && arr[i][1] === arr[i][2] && arr[i][0] !== " "){
+                let result=arr[i][0]+"Win";
+                if(result[0]==="X"){
+                    alert("player 1 Win");
+                }else{
+                    alert("player 2 Win");
+                }
+            }else if(arr[0][i] === arr[1][i] && arr[1][i] === arr[2][i] && arr[0][i] !== " "){
+                let result=arr[i][0]+"Win";
+                if(result[0]==="X"){
+                    alert("player 1 Win");
+                }else{
+                    alert("player 2 Win");
+                }
+            }
+        }if(arr[0][0] === arr[1][1] && arr[1][1] === arr[2][2] && arr[0][0] !==" "){
+            let result=arr[0][0]+"Win";
+            if(result[0]==="X"){
+                alert("player 1 Win");
+            }else{
+                alert("player 2 Win");
+            }
+        }else if(arr[0][2] === arr[1][1] && arr[1][1] === arr[2][0] && arr[0][2] !==" " ){
+            let result=arr[0][2]+"Win";
+            if(result[0]==="X"){
+                alert("player 1 Win");
+            }else{
+                alert("player 2 Win");
+            }
+        }
+    }
+    function changeplayer() {
+        let player1 = document.getElementById("player1");
+        let player2 = document.getElementById("player2");
+
+        if (player1.innerText === "player 1 (X):turn") {
+            player1.innerText = "player 1 (X):";
+            player2.innerText = "player 2 (O):turn";
+        } else {
+            player1.innerText = "player 1 (X):turn";
+            player2.innerText = "player 2 (O):";
+        }
+    }
+    let value;
+    function checkid(any) {
+        value = any.id;
+    }
+    function tictactoe(){
+        let player1 = document.getElementById("player1");
+        let player2 = document.getElementById("player2");
+        let row=parseInt(value[0]);
+        let col=parseInt(value[1]);
+        if(value) {
+            if (player1.innerText === "player 1 (X):turn" && arr[row][col] === " ") {
+                document.getElementById(value).innerText = "X";
+                arr[row][col] = "X";
+                changeplayer()
+            } else if (player2.innerText === "player 2 (O):turn" && arr[row][col] === " ") {
+                document.getElementById(value).innerText = "O";
+                arr[row][col] = "O";
+                changeplayer()
+            } else {
+                alert("box has been checked");
+            }
+            value = null
+        }
+    }
+</script>
+</body>
+</html>

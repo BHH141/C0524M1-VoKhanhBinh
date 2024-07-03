@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p>Nhập số</p>
+<input id="num" type="text">
+<input type="button" onclick="solve()" value="Hoàn thành">
+<p id="result"></p>
+<script>
+    function solve() {
+        let num = [10,23,445,2,-1,45,-124,-4,24,25];
+        let input =+document.getElementById("num").value;
+        let i = 0;
+        for (; i < num.length; i++) {
+            if (input === num[i]){
+                break;
+            }
+        }
+        for(;i<num.length;i++){
+            num[i]=num[i+1];
+        }
+        document.write(num)
+        }
+</script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    let str1=prompt("Nhap 1 chuoi:");
+    let str2=prompt("Nhap 1 chuoi:");
+    let count=0;
+    if(str1.length===str2.length){
+        for(let i=0;i<str1.length;i++){
+            if(str1[i]===str2[i]){
+            }else{
+                count++
+            }
+        }
+    }else{
+        count++
+    }
+    if(count===0){
+        document.write("2 chuoi giong nhau");
+    }else{
+        document.write("2 chuoi khac nhau")
+    }
+</script>
+</body>
+</html>

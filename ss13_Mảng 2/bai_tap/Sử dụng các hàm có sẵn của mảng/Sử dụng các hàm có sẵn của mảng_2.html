@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    let num=prompt("Nhập 1 số");
+    S=""
+    for(let i=0;i<num.length;i++){
+        if(+num[i]%2===0 && +num[i+1]%2===0){
+            S=S+num[i]+"-";
+        }else{
+            S=S+num[i];
+        }
+    }
+    document.write(S)
+</script>
+</body>
+</html>

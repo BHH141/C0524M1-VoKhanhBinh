@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    let str="-1sfa-2-f-33f47f3f-4"
+    let count=0;
+    for(let i=0;i<str.length;i++){
+        if(str[i]==="-" && str[i+1]>='0' && str[i+1]<='9'){
+            count++;
+        }
+    }
+    alert("số số âm là: "+count)
+</script>
+</body>
+</html>

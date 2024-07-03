@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<d>Tiếng anh</d><br>
+<input type="text" id="english">
+<input type="button" value="Hoàn thành" onclick="Vietnamese()">
+<script>
+    let eng=["Harmony","Journey","Enthusiasm","Liberty","Innovation","Mystery","Courage","Eclipse","Whisper","Adventure"];
+    let viet=["Sự hòa hợp","Hành trình","Sự nhiệt tình","Tự do","Sự đổi mới","Bí ẩn","Sự can đảm","Nhật thực hoặc nguyệt thực","Thì thầm","Cuộc phiêu lưu"];
+    function Vietnamese(){
+        let str=document.getElementById("english").value;
+        let count=0;
+        for(let i=0;i<eng.length;i++){
+            if(str===eng[i]){
+                break;
+            }
+            count++
+        }
+        document.write(viet[count]);
+    }
+</script>
+</body>
+</html>

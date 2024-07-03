@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    let arr=[1,4,5,6,2,"-","r","d","h","s","f","-"];
+    let place=[];
+    for(let i=0;i<arr.length;i++){
+        if(arr[i]==="-"){
+            place.push(i);
+        }
+    }
+    for(let i=0;i<place.length;i++){
+        arr[place[i]]="_"
+    }
+    document.write(arr)
+</script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<textarea id="input" onkeydown="change()"></textarea>
+<script>
+    function change() {
+        let result = "Tôi là một đứa ngốc !!!"
+        let input = document.getElementById("input");
+        if (input) {
+            for (let i = 0; i < result.length; i++) {
+                if(i=0) {
+                    document.getElementById("input").innerText = result[0];
+                }else{
+                    document.getElementById("input").innerText += result[i];
+                }
+            }
+        }
+    }
+</script>
+</body>
+</html>

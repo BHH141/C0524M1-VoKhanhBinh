@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    let num=[-12,2,6,4,6,8,-3,3,-4,4,-100];
+    let result=[];
+    for(let i=0;i<num.length;i++){
+        if(num[i]<0){
+            result.push(num[i]);
+        }
+    }
+    document.write("có "+result.length+" số âm và "+(num.length-result.length)+"số dương")
+</script>
+</body>
+</html>

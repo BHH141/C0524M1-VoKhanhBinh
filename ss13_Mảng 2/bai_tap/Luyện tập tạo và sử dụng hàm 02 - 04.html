@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p>Nhap :</p>
+<input id="str" type="text">
+<input type="button" onclick="solve()" value="Hoan thanh">
+<script>
+    function solve(){
+        let input=document.getElementById("str").value;
+        let count=0;
+        for(let i=0;i<input.length;i++){
+            if(input[i]>="0" && input[i]<"9"){
+            }else{
+                count++;
+            }
+        }
+        document.write(count)
+    }
+</script>
+</body>
+</html>
