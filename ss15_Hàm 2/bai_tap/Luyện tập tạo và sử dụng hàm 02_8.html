@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    function replace(arr){
+        let result=[];
+        for(let i=0;i<arr.length;i++){
+            result.unshift(arr[i])
+        }
+        return result;
+    }
+    let arr=[]
+    let n=parseInt(prompt("Nhập số lượng phần tử"));
+    for(let i=0;i<n;i++){
+        let num=parseInt(prompt("Nhập số vị trí "+i));
+        arr.push(num);
+    }
+    document.write(replace(arr))
+</script>
+</body>
+</html>

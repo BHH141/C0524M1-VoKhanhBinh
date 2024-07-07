@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    function replace(num){
+        let result=[];
+        if(num.length === 1){
+            return num;
+        }else{
+            for(let i=0;i<num.length;i++){
+                result.shift(num[i])
+            }
+            return  result;
+        }
+    }
+    let num=parseInt(prompt("Nhập 1 số: "));
+    document.write(replace(num))
+</script>
+</body>
+</html>

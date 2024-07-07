@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p>foot To Meter</p>
+<input type="text" id="feet">
+<p>meter To Foot</p>
+<input type="text" id="meter">
+<button onclick="change()">Hoàn thành</button>
+<script>
+    function FootToMeter(foot){
+        foot*=0.305;
+        return foot;
+    }
+    function MeterTOFoot(meter){
+        meter*=3.279;
+        return meter;
+    }
+    function change(){
+        let input1=parseFloat(document.getElementById("feet").value);
+        let input2=parseFloat(document.getElementById("meter").value);
+        if(input1){
+            alert(FootToMeter(input1));
+        }else if(input2){
+            alert(MeterTOFoot(input2));
+        }else{
+            alert("Chưa nhập")
+        }
+    }
+</script>
+</body>
+</html>
