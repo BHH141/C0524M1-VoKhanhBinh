@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    class Temperature{
+        constructor(temp) {
+            this.temp=temp;
+        }
+        CToF(){
+            return this.temp*9/5+32
+        }
+        CToKelvin(){
+            return this.temp+273.15
+        }
+    }
+    let demo=new Temperature(25);
+    document.write(`${demo.temp} C=${demo.CToF()} F <br>`)
+    document.write(`${demo.temp} C=${demo.CToKelvin()} F`)
+</script>
+</body>
+</html>

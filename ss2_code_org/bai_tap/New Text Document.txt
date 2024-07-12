@@ -1,0 +1,10 @@
+BEGIN
+	n=input
+	input=a1,a2,a3,...,ai với i<n
+	for x in range 1 to i
+		ax=max
+		if ax < a(x+1)
+			a(x+1)=max
+	DISPLAY max
+END
+			

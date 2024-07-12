@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    class Rectangle{
+        constructor(height,width) {
+            this.height=height;
+            this.width=width;
+        }
+        Acreage(){
+            return this.height*this.width
+        }
+        Perimeter(){
+            return 2*(this.height+this.width)
+        }
+    }
+    let Hcn=new Rectangle(10,20);
+    document.write(`Diện tích HCN là ${Hcn.Acreage()} <br>`)
+    document.write(`Chu vi HCN là ${Hcn.Perimeter()}`)
+</script>
+</body>
+</html>
