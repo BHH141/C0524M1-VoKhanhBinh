@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            background: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        canvas {
+            border: 1px solid white;
+        }
+    </style>
+</head>
+<body>
+<canvas width="320" height="640" id="game"></canvas>
+<script>
+    let brick;
+    let canvas = document.getElementById("game");
+    let ctx = canvas.getContext('2d');
+    let blockSize = 30;
+
+    // Hàm để tự động di chuyển hình ảnh xuống dưới
+    function autoDown(shape, color) {
+        let { startX, startY } = drawTetrisCenter(shape, color);
+        setInterval(() => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            startY += 1;
+            drawTetris(startX, startY, shape, color);
+        }, 500);
+    }
+
+    let tetrominos = {
+        I: [
+            [0,0,0,0],
+            [1,1,1,1],
+            [0,0,0,0],
+            [0,0,0,0]
+        ],
+        J: [
+            [1,0,0],
+            [1,1,1],
+            [0,0,0],
+        ],
+        L: [
+            [0,0,1],
+            [1,1,1],
+            [0,0,0],
+        ],
+        O: [
+            [1,1],
+            [1,1],
+        ],
+        S: [
+            [0,1,1],
+            [1,1,0],
+            [0,0,0],
+        ],
+        Z: [
+            [1,1,0],
+            [0,1,1],
+            [0,0,0],
+        ],
+        T: [
+            [0,1,0],
+            [1,1,1],
+            [0,0,0],
+        ]
+    };
+
+    //hàm chọn một khối gạch
+    function chooseBrick() {
+        let value = Math.floor(Math.random() * 7) + 1;
+        switch (value) {
+            case 1:
+                brick = tetrominos.I;
+                break;
+            case 2:
+                brick = tetrominos.J;
+                break;
+            case 3:
+                brick = tetrominos.L;
+                break;
+            case 4:
+                brick = tetrominos.O;
+                break;
+            case 5:
+                brick = tetrominos.S;
+                break;
+            case 6:
+                brick = tetrominos.Z;
+                break;
+            case 7:
+                brick = tetrominos.T;
+                break;
+        }
+    }
+
+    //Hàm vẻ 1 viên gạch
+    function drawBlock(x, y, color) {
+        ctx.fillStyle = color;
+        ctx.fillRect(x * blockSize, y * blockSize, blockSize, blockSize);
+        ctx.strokeRect(x * blockSize, y * blockSize, blockSize, blockSize);
+    }
+
+    //Hàm vẽ 1 khối Tetris
+    function drawTetris(x, y, shape, color) {
+        for (let row = 0; row < shape.length; row++) {
+            for (let col = 0; col < shape[row].length; col++) {
+                if (shape[row][col]) {
+                    drawBlock(x + col, y + row, color);
+                }
+            }
+        }
+    }
+
+    //Hàm vẽ ở giữa canvas
+    function drawTetrisCenter(shape, color) {
+        let numCols = shape[0].length;
+        let x = Math.floor((canvas.width / blockSize - numCols) / 2);
+        let y = 0; // Vẽ từ phía trên cùng
+        drawTetris(x, y, shape, color);
+        return { startX: x, startY: y }; // Trả về vị trí bắt đầu
+    }
+    //hàm để kiểm tra xem nê khối chạm đa hoặc chạm khối khác thì sẻ dừng lại
+    function CheckStop(){
+        
+    }
+
+    chooseBrick();
+    autoDown(brick, 'purple'); // Thay đổi màu sắc thành 'purple'
+</script>
+</body>
+</html>

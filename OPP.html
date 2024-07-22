@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tetris Game</title>
+</head>
+<body>
+<canvas id="tetris-canvas" width="420" height="600"></canvas>
+<script>
+    class Game {
+        constructor() {
+            this.score = 0;
+            this.boardWidth = 10;
+            this.boardHeight = 23;
+            this.currentTetromino = null;
+            //bảng lưu tất cả các khối kể cả các khối đang rơi
+            this.currentBoard = Array.from({ length: this.boardHeight }, () => Array(this.boardWidth).fill(0));
+            //bảng lưu các khối đã tiếp đất
+            this.landedBoard = Array.from({ length: this.boardHeight }, () => Array(this.boardWidth).fill(0));
+            this.canvas = document.getElementById('tetris-canvas');
+            this.ctx = this.canvas.getContext('2d');
+        }
+        //Phương thức để vẽ bảng trò chơi và thông tin.
+        draw() {
+            let blockSize = 24;
+            let padding = 4;
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            this.ctx.rect(padding, padding, blockSize * this.boardWidth + padding * (this.boardWidth + 1), blockSize * (this.boardHeight - 3) + padding * (this.boardHeight - 3 + 1));
+            this.ctx.stroke();
+            for (let i = 3; i < this.boardHeight; i++) {
+                for (let j = 0; j < this.boardWidth; j++) {
+                    if (this.currentBoard[i][j] > 0) {
+                        this.ctx.fillStyle = this.getColor(this.currentBoard[i][j]);
+                    } else {
+                        this.ctx.fillStyle = "rgb(248, 248, 248)";
+                    }
+                    this.ctx.fillRect(padding * 2 + j * (blockSize + padding), padding * 2 + (i - 3) * (blockSize + padding), blockSize, blockSize);
+                }
+            }
+            this.ctx.fillStyle = "rgb(0, 0, 0)";
+            this.ctx.font = "28px";
+            this.ctx.fillText("Score:", 300, 28);
+            this.ctx.fillText(this.score.toString(), 300, 58);
+        }
+        //Phương thức để tạo một khối tetromino ngẫu nhiên.
+        randomTetromino() {
+            let randNum = Math.floor(Math.random() * Math.floor(7));
+            switch (randNum) {
+                case 0:
+                    return new LShape(1, 4);
+                case 1:
+                    return new JShape(1, 4);
+                case 2:
+                    return new OShape(2, 4);
+                case 3:
+                    return new TShape(2, 4);
+                case 4:
+                    return new SShape(2, 4);
+                case 5:
+                    return new ZShape(2, 4);
+                case 6:
+                    return new IShape(0, 4);
+            }
+        }
+        //thêm màu
+        getColor(cellNumber) {
+            switch (cellNumber) {
+                case 1:
+                    return LShape.color
+                case 2:
+                    return JShape.color
+                case 3:
+                    return OShape.color
+                case 4:
+                    return TShape.color
+                case 5:
+                    return SShape.color
+                case 6:
+                    return ZShape.color
+                case 7:
+                    return IShape.color
+            }
+        }
+
+        //Kiểm tra nếu khối tetromino chạm đáy của bảng.
+        bottomOverlapped(tetromino) {
+            if (tetromino.row + tetromino.height > this.boardHeight) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        //Kiểm tra nếu khối tetromino chạm vào các khối đã tiếp đất.
+        landedOverlapped(tetromino) {
+            for (let i = 0; i < tetromino.height; i++) {
+                for (let j = 0; j < tetromino.width; j++) {
+                    if (tetromino.shape[i][j] > 0 && this.landedBoard[tetromino.row + i][tetromino.col + j] > 0) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        //Gắn khối đang rơi vào đáy
+        mergeCurrentTetromino() {
+            for (let i = 0; i < this.currentTetromino.height; i++) {
+                for (let j = 0; j < this.currentTetromino.width; j++) {
+                    if (this.currentTetromino.shape[i][j] > 0) {
+                        this.landedBoard[this.currentTetromino.row + i][this.currentTetromino.col + j] = this.currentTetromino.shape[i][j];
+                    }
+                }
+            }
+        }
+        //Phương thức để di chuyển khối tetromino xuống và kiểm tra va chạm.
+        progress() {
+            if (this.currentTetromino) {
+                let nextTetromino = new this.currentTetromino.constructor(this.currentTetromino.row + 1, this.currentTetromino.col, this.currentTetromino.angle);
+                if (!this.bottomOverlapped(nextTetromino) && !this.landedOverlapped(nextTetromino)) {
+                    this.currentTetromino.fall();
+                } else {
+                    this.mergeCurrentTetromino();
+                    this.clearRows(); // Xóa các dòng đầy
+                    this.currentTetromino = this.randomTetromino();
+                }
+            }
+        }
+        tryMoveDown() {
+            this.progress();
+            this.updateCurrentBoard();
+            this.draw();
+        }
+        //Kiểm tra khối tetromino có bị vợi quá lề trái không
+        leftOverlapped(tetromino) {
+            if(tetromino.col < 0) {
+                return true
+            } else {
+                return false
+            }
+        }
+        ////Kiểm tra khối tetromino có bị vợi quá lề phải không
+        rightOverlapped(tetromino) {
+            if (tetromino.col + tetromino.width > this.boardWidth) {
+                return true
+            } else {
+                return false
+            }
+        }
+        tryMoveLeft() {
+            let tempTetromino = new this.currentTetromino.constructor(this.currentTetromino.row, this.currentTetromino.col - 1, this.currentTetromino.angle)
+            if (!this.leftOverlapped(tempTetromino) &&
+                !this.landedOverlapped(tempTetromino)) {
+                this.currentTetromino.col -= 1
+                this.updateCurrentBoard()
+                this.draw()
+            }
+        }
+        tryMoveRight() {
+            let tempTetromino = new this.currentTetromino.constructor(this.currentTetromino.row, this.currentTetromino.col + 1, this.currentTetromino.angle)
+            if (!this.rightOverlapped(tempTetromino) &&
+                !this.landedOverlapped(tempTetromino)) {
+                this.currentTetromino.col += 1
+                this.updateCurrentBoard()
+                this.draw()
+            }
+        }
+        //xoay khối
+        tryRotating() {
+            let tempTetromino = new this.currentTetromino.constructor(this.currentTetromino.row + 1, this.currentTetromino.col, this.currentTetromino.angle)
+            tempTetromino.rotate()
+            if (!this.rightOverlapped(tempTetromino) &&
+                !this.bottomOverlapped(tempTetromino) &&
+                !this.landedOverlapped(tempTetromino)) {
+                this.currentTetromino.rotate()
+                this.updateCurrentBoard()
+                this.draw()
+            }
+        }
+        //Cập nhật bảng hiện tại với vị trí của các khối tetromino.
+        updateCurrentBoard() {
+            for (let i = 0; i < this.boardHeight; i++) {
+                for (let j = 0; j < this.boardWidth; j++) {
+                    this.currentBoard[i][j] = this.landedBoard[i][j];
+                }
+            }
+            for (let i = 0; i < this.currentTetromino.height; i++) {
+                for (let j = 0; j < this.currentTetromino.width; j++) {
+                    if (this.currentTetromino.shape[i][j] > 0) {
+                        this.currentBoard[this.currentTetromino.row + i][this.currentTetromino.col + j] = this.currentTetromino.shape[i][j];
+                    }
+                }
+            }
+        }
+        //tìm hàng đã full
+        findClearableRows(){
+            let fullrow=[];
+            for(let i=0;i < this.landedBoard.length;i++){
+                let row=this.landedBoard[i];
+                let allCellsFilled = true;
+                for(let j=0;j < row.length;j++){
+                    if(row[j] === 0){
+                        allCellsFilled = false;
+                        break;
+                    }
+                }
+                if(allCellsFilled === true){
+                    fullrow.push(i);
+                }
+            }
+            return fullrow
+        }
+        //xóa hàng và cộng điểm
+        clearRows(){
+            let clearableIndexes = this.findClearableRows();
+            if (clearableIndexes.length === 0) {
+                return;
+            }
+            clearableIndexes.sort((a, b) => b - a);
+            for (let i = 0; i < clearableIndexes.length; i++) {
+                let index = clearableIndexes[i];
+                this.landedBoard.splice(index, 1); // Xóa dòng đầy
+                // Thêm một dòng trống mới ở đầu bảng
+                this.landedBoard.unshift(Array(this.boardWidth).fill(0));
+            }
+            this.score += clearableIndexes.length * 100;
+        }
+        //Bắt đầu vòng lặp trò chơi, tự động tiến hành trò chơi mỗi 800ms.
+        play() {
+            setInterval(() => {
+                this.progress();
+                this.updateCurrentBoard();
+                this.draw();
+            }, 800);
+        }
+    }
+    class Tetromino {
+        constructor(row, col) {
+            let angle = 0;
+            this.row = row;
+            this.col = col;
+            this.angle = angle;
+        }
+        get shape() {
+            return this.constructor.shapes[this.angle];
+        }
+        get width() {
+            return this.shape[0].length;
+        }
+        get height() {
+            return this.shape.length;
+        }
+        fall() {
+            this.row += 1;
+        }
+        rotate() {
+            this.angle = (this.angle + 1) % 4;
+        }
+    }
+    class LShape extends Tetromino { }
+    LShape.shapes = [
+        [[1, 0],
+            [1, 0],
+            [1, 1]],
+        [[1, 1, 1],
+            [1, 0, 0]],
+        [[1, 1],
+            [0, 1],
+            [0, 1]],
+        [[0, 0, 1],
+            [1, 1, 1]]
+    ];
+    LShape.color = "rgb(255, 87, 34)";
+    class JShape extends Tetromino { }
+    JShape.shapes = [
+        [[0, 2],
+            [0, 2],
+            [2, 2]],
+        [[2, 0, 0],
+            [2, 2, 2]],
+        [[2, 2],
+            [2, 0],
+            [2, 0]],
+        [[2, 2, 2],
+            [0, 0, 2]]
+    ];
+    JShape.color = "rgb(63, 81, 181)";
+    class OShape extends Tetromino { }
+    OShape.shapes = [
+        [[3, 3],
+            [3, 3]],
+        [[3, 3],
+            [3, 3]],
+        [[3, 3],
+            [3, 3]],
+        [[3, 3],
+            [3, 3]]
+    ];
+    OShape.color = "rgb(255, 235, 59)";
+    class TShape extends Tetromino { }
+    TShape.shapes = [
+        [[0, 4, 0],
+            [4, 4, 4]],
+        [[4, 0],
+            [4, 4],
+            [4, 0]],
+        [[4, 4, 4],
+            [0, 4, 0]],
+        [[0, 4],
+            [4, 4],
+            [0, 4]]
+    ];
+    TShape.color = "rgb(156, 39, 176)";
+    class SShape extends Tetromino { }
+    SShape.shapes = [
+        [[0, 5, 5],
+            [5, 5, 0]],
+        [[5, 0],
+            [5, 5],
+            [0, 5]],
+        [[0, 5, 5],
+            [5, 5, 0]],
+        [[5, 0],
+            [5, 5],
+            [0, 5]]
+    ];
+    SShape.color = "rgb(76, 175, 80)";
+    class ZShape extends Tetromino { }
+    ZShape.shapes = [
+        [[6, 6, 0],
+            [0, 6, 6]],
+        [[0, 6],
+            [6, 6],
+            [6, 0]],
+        [[6, 6, 0],
+            [0, 6, 6]],
+        [[0, 6],
+            [6, 6],
+            [6, 0]]
+    ];
+    ZShape.color = "rgb(183, 28, 28)";
+    class IShape extends Tetromino { }
+    IShape.shapes = [
+        [[7],
+            [7],
+            [7],
+            [7]],
+        [[7, 7, 7, 7]],
+        [[7],
+            [7],
+            [7],
+            [7]],
+        [[7, 7, 7, 7]]
+    ];
+    IShape.color = "rgb(0, 188, 212)";
+
+    let game = new Game();
+
+    window.addEventListener('keydown', (event) => {
+        switch (event.keyCode) {
+            case 37:
+                game.tryMoveLeft();
+                break;
+            case 39:
+                game.tryMoveRight();
+                break;
+            case 38:
+                game.tryRotating();
+                break;
+            case 40:
+                game.tryMoveDown();
+                break;
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        game.currentTetromino = game.randomTetromino();
+        game.updateCurrentBoard();
+        game.draw();
+        game.play();
+    });
+</script>
+</body>
+</html>
