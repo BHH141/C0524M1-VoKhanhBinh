@@ -11,65 +11,75 @@
         constructor() {
             this.score = 0;
             this.boardWidth = 10;
-            this.boardHeight = 23;
+            this.boardHeight = 20;
             this.currentTetromino = null;
-            this.currentBoard = new Array(this.boardHeight).fill(0).map(() => new Array(this.boardWidth).fill(0));
-            this.landedBoard = new Array(this.boardHeight).fill(0).map(() => new Array(this.boardWidth).fill(0))
+            this.currentBoard = Array.from({ length: this.boardHeight }, () => Array(this.boardWidth).fill(0));
+            this.landedBoard = Array.from({ length: this.boardHeight }, () => Array(this.boardWidth).fill(0));
             this.canvas = document.getElementById('tetris-canvas');
             this.ctx = this.canvas.getContext('2d');
         }
-        //Phương thức để vẽ toàn bộ bảng trò chơi.
+
         draw() {
-            let blockSize = 24;
-            let padding = 4;
+            const blockSize = 24;
+            const padding = 4;
+            const offsetY = 3; // Offset for the hidden rows
+
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            this.ctx.rect(padding, padding, blockSize * this.boardWidth + padding * (this.boardWidth + 1), blockSize * (this.boardHeight - 3) + padding * (this.boardHeight - 3 + 1));
-            this.ctx.stroke();
-            for (let i = 3; i < this.boardHeight; i++) {
+            this.ctx.strokeRect(
+                padding,
+                padding,
+                blockSize * this.boardWidth + padding * (this.boardWidth + 1),
+                blockSize * (this.boardHeight - offsetY) + padding * (this.boardHeight - offsetY + 1)
+            );
+
+            for (let i = offsetY; i < this.boardHeight; i++) {
                 for (let j = 0; j < this.boardWidth; j++) {
-                    if (this.currentBoard[i][j] > 0) {
-                        this.ctx.fillStyle = "rgb(0, 0, 0)";
-                    } else {
-                        this.ctx.fillStyle = "rgb(248, 248, 248)";
-                    }
-                    this.ctx.fillRect(padding * 2 + j * (blockSize + padding), padding * 2 + (i - 3) * (blockSize + padding), blockSize, blockSize);
+                    this.ctx.fillStyle = this.getColor(this.currentBoard[i][j]) || "rgb(248, 248, 248)";
+                    this.ctx.fillRect(
+                        padding * 2 + j * (blockSize + padding),
+                        padding * 2 + (i - offsetY) * (blockSize + padding),
+                        blockSize,
+                        blockSize
+                    );
                 }
             }
+
             this.ctx.fillStyle = "rgb(0, 0, 0)";
-            this.ctx.font = "28px";
-            this.ctx.fillText("TIẾP THEO:", 300, 28);
-            this.ctx.fillText("ĐIỂM SỐ:", 300, 200);
-            this.ctx.fillText(this.score.toString(), 300, 230);
+            this.ctx.font = "28px Arial";
+            this.ctx.fillText("Score:", 300, 28);
+            this.ctx.fillText(this.score.toString(), 300, 58);
         }
-        //Phương thức để tạo ngẫu nhiên một khối tetromino.
+
         randomTetromino() {
-            let randNum = Math.floor(Math.random() * Math.floor(7));
+            const randNum = Math.floor(Math.random() * 7);
             switch (randNum) {
-                case 0:
-                    return new LShape(1, 4);
-                case 1:
-                    return new JShape(1, 4);
-                case 2:
-                    return new OShape(2, 4);
-                case 3:
-                    return new TShape(2, 4);
-                case 4:
-                    return new SShape(2, 4);
-                case 5:
-                    return new ZShape(2, 4);
-                case 6:
-                    return new IShape(0, 4);
+                case 0: return new LShape(1, 4);
+                case 1: return new JShape(1, 4);
+                case 2: return new OShape(2, 4);
+                case 3: return new TShape(2, 4);
+                case 4: return new SShape(2, 4);
+                case 5: return new ZShape(2, 4);
+                case 6: return new IShape(0, 4);
             }
         }
-        //Phương thức kiểm tra nếu khối tetromino chạm đáy.
+
+        getColor(cellNumber) {
+            switch (cellNumber) {
+                case 1: return LShape.color;
+                case 2: return JShape.color;
+                case 3: return OShape.color;
+                case 4: return TShape.color;
+                case 5: return SShape.color;
+                case 6: return ZShape.color;
+                case 7: return IShape.color;
+                default: return null;
+            }
+        }
+
         bottomOverlapped(tetromino) {
-            if (tetromino.row + tetromino.height > this.boardHeight) {
-                return true;
-            } else {
-                return false;
-            }
+            return tetromino.row + tetromino.height > this.boardHeight;
         }
-        //Phương thức kiểm tra nếu khối tetromino chạm vào khối đã tiếp đất.
+
         landedOverlapped(tetromino) {
             for (let i = 0; i < tetromino.height; i++) {
                 for (let j = 0; j < tetromino.width; j++) {
@@ -80,7 +90,7 @@
             }
             return false;
         }
-        //Phương thức để hợp nhất khối hiện tại vào bảng đã tiếp đất.
+
         mergeCurrentTetromino() {
             for (let i = 0; i < this.currentTetromino.height; i++) {
                 for (let j = 0; j < this.currentTetromino.width; j++) {
@@ -90,67 +100,77 @@
                 }
             }
         }
-        //Phương thức để tiến hành trò chơi
+
         progress() {
             if (this.currentTetromino) {
-                let nextTetromino = new this.currentTetromino.constructor(this.currentTetromino.row + 1, this.currentTetromino.col, this.currentTetromino.angle);
+                const nextTetromino = new this.currentTetromino.constructor(this.currentTetromino.row + 1, this.currentTetromino.col, this.currentTetromino.angle);
                 if (!this.bottomOverlapped(nextTetromino) && !this.landedOverlapped(nextTetromino)) {
                     this.currentTetromino.fall();
                 } else {
                     this.mergeCurrentTetromino();
+                    this.clearRows();
                     this.currentTetromino = this.randomTetromino();
+                    if (this.landedOverlapped(this.currentTetromino)) {
+                        this.isGameOver = true;
+                        alert("Game Over! Final Score: " + this.score);
+                        return;
+                    }
                 }
             }
+            this.checkGameOver();
         }
+
+        moveToBottom() {
+            while (!this.bottomOverlapped(this.currentTetromino) && !this.landedOverlapped(new this.currentTetromino.constructor(this.currentTetromino.row + 1, this.currentTetromino.col, this.currentTetromino.angle))) {
+                this.currentTetromino.fall();
+            }
+            this.progress();
+            this.updateCurrentBoard();
+            this.draw();
+        }
+
         tryMoveDown() {
             this.progress();
             this.updateCurrentBoard();
             this.draw();
         }
+
         leftOverlapped(tetromino) {
-            if (tetromino.col < 0) {
-                return true
-            } else {
-                return false
-            }
+            return tetromino.col < 0;
         }
+
         rightOverlapped(tetromino) {
-            if (tetromino.col + tetromino.width > this.boardWidth) {
-                return true
-            } else {
-                return false
-            }
+            return tetromino.col + tetromino.width > this.boardWidth;
         }
+
         tryMoveLeft() {
-            const tempTetromino = new this.currentTetromino.constructor(this.currentTetromino.row, this.currentTetromino.col - 1, this.currentTetromino.angle)
-            if (!this.leftOverlapped(tempTetromino) &&
-                !this.landedOverlapped(tempTetromino)) {
-                this.currentTetromino.col -= 1
-                this.updateCurrentBoard()
-                this.draw()
+            const tempTetromino = new this.currentTetromino.constructor(this.currentTetromino.row, this.currentTetromino.col - 1, this.currentTetromino.angle);
+            if (!this.leftOverlapped(tempTetromino) && !this.landedOverlapped(tempTetromino)) {
+                this.currentTetromino.col -= 1;
+                this.updateCurrentBoard();
+                this.draw();
             }
         }
+
         tryMoveRight() {
-            const tempTetromino = new this.currentTetromino.constructor(this.currentTetromino.row, this.currentTetromino.col + 1, this.currentTetromino.angle)
-            if (!this.rightOverlapped(tempTetromino) &&
-                !this.landedOverlapped(tempTetromino)) {
-                this.currentTetromino.col += 1
-                this.updateCurrentBoard()
-                this.draw()
+            const tempTetromino = new this.currentTetromino.constructor(this.currentTetromino.row, this.currentTetromino.col + 1, this.currentTetromino.angle);
+            if (!this.rightOverlapped(tempTetromino) && !this.landedOverlapped(tempTetromino)) {
+                this.currentTetromino.col += 1;
+                this.updateCurrentBoard();
+                this.draw();
             }
         }
+
         tryRotating() {
-            const tempTetromino = new this.currentTetromino.constructor(this.currentTetromino.row, this.currentTetromino.col, this.currentTetromino.angle)
-            tempTetromino.rotate()
-            if (!this.rightOverlapped(tempTetromino) &&
-                !this.bottomOverlapped(tempTetromino) &&
-                !this.landedOverlapped(tempTetromino)) {
-                this.currentTetromino.rotate()
-                this.updateCurrentBoard()
-                this.draw()
+            const tempTetromino = new this.currentTetromino.constructor(this.currentTetromino.row, this.currentTetromino.col, this.currentTetromino.angle);
+            tempTetromino.rotate();
+            if (!this.rightOverlapped(tempTetromino) && !this.bottomOverlapped(tempTetromino) && !this.landedOverlapped(tempTetromino)) {
+                this.currentTetromino.rotate();
+                this.updateCurrentBoard();
+                this.draw();
             }
         }
-        //Phương thức để cập nhật bảng hiện tại.
+
         updateCurrentBoard() {
             for (let i = 0; i < this.boardHeight; i++) {
                 for (let j = 0; j < this.boardWidth; j++) {
@@ -165,177 +185,242 @@
                 }
             }
         }
+
+        findClearableRows() {
+            const fullRows = [];
+            for (let i = 0; i < this.landedBoard.length; i++) {
+                if (this.landedBoard[i].every(cell => cell > 0)) {
+                    fullRows.push(i);
+                }
+            }
+            return fullRows;
+        }
+
+        clearRows() {
+            const clearableRows = this.findClearableRows();
+            if (clearableRows.length === 0) return;
+
+            for (let rowIndex of clearableRows) {
+                this.landedBoard.splice(rowIndex, 1);
+                this.landedBoard.unshift(Array(this.boardWidth).fill(0));
+            }
+            this.score += clearableRows.length * 100;
+        }
+
+        checkGameOver() {
+            if (this.landedBoard[3].some(cell => cell > 0)) {
+                this.isGameOver = true;
+                alert("Game Over! Final Score: " + this.score);
+            }
+        }
+
         play() {
             setInterval(() => {
-                this.tryMoveDown();
+                if (!this.isGameOver) {
+                    this.progress();
+                    this.updateCurrentBoard();
+                    this.draw();
+                }
             }, 800);
         }
     }
+
     class Tetromino {
         constructor(row, col) {
-            let angle = 0;
             this.row = row;
             this.col = col;
-            this.angle = angle;
+            this.angle = 0;
+            this.shape = this.shapes[0];
         }
-        get shape() {
-            return this.constructor.shapes[this.angle];
-        }
-        get width() {
-            return this.shape[0].length;
-        }
-        get height() {
-            return this.shape.length;
-        }
+
         fall() {
-            this.row += 1;
+            this.row++;
         }
+
         rotate() {
-            this.angle = (this.angle + 1) % 4;
+            this.angle = (this.angle + 90) % 360;
+            this.shape = this.shapes[this.angle / 90];
         }
     }
-    class LShape extends Tetromino { }
-    LShape.shapes = [
-        [[1, 0],
-            [1, 0],
-            [1, 1]],
 
-        [[1, 1, 1],
-            [1, 0, 0]],
+    class LShape extends Tetromino {
+        constructor(row, col) {
+            super(row, col);
+            this.shapes = [
+                [
+                    [1, 0],
+                    [1, 0],
+                    [1, 1]
+                ],
+                [
+                    [0, 0, 1],
+                    [1, 1, 1]
+                ],
+                [
+                    [1, 1],
+                    [0, 1],
+                    [0, 1]
+                ],
+                [
+                    [1, 1, 1],
+                    [1, 0, 0]
+                ]
+            ];
+            this.shape = this.shapes[0];
+        }
+    }
+    LShape.color = "rgb(255, 165, 0)";
 
-        [[1, 1],
-            [0, 1],
-            [0, 1]],
+    class JShape extends Tetromino {
+        constructor(row, col) {
+            super(row, col);
+            this.shapes = [
+                [
+                    [0, 2],
+                    [0, 2],
+                    [2, 2]
+                ],
+                [
+                    [2, 2, 2],
+                    [0, 0, 2]
+                ],
+                [
+                    [2, 2],
+                    [2, 0],
+                    [2, 0]
+                ],
+                [
+                    [2, 0, 0],
+                    [2, 2, 2]
+                ]
+            ];
+            this.shape = this.shapes[0];
+        }
+    }
+    JShape.color = "rgb(0, 0, 255)";
 
-        [[0, 0, 1],
-            [1, 1, 1]]
-    ];
-    LShape.color = "rgb(255, 87, 34)";
-    class JShape extends Tetromino { }
-    JShape.shapes = [
-        [[0, 2],
-            [0, 2],
-            [2, 2]],
+    class OShape extends Tetromino {
+        constructor(row, col) {
+            super(row, col);
+            this.shapes = [
+                [
+                    [3, 3],
+                    [3, 3]
+                ]
+            ];
+            this.shape = this.shapes[0];
+        }
+    }
+    OShape.color = "rgb(255, 255, 0)";
 
-        [[2, 0, 0],
-            [2, 2, 2]],
+    class TShape extends Tetromino {
+        constructor(row, col) {
+            super(row, col);
+            this.shapes = [
+                [
+                    [0, 4, 0],
+                    [4, 4, 4]
+                ],
+                [
+                    [4, 0],
+                    [4, 4],
+                    [4, 0]
+                ],
+                [
+                    [4, 4, 4],
+                    [0, 4, 0]
+                ],
+                [
+                    [0, 4],
+                    [4, 4],
+                    [0, 4]
+                ]
+            ];
+            this.shape = this.shapes[0];
+        }
+    }
+    TShape.color = "rgb(128, 0, 128)";
 
-        [[2, 2],
-            [2, 0],
-            [2, 0]],
+    class SShape extends Tetromino {
+        constructor(row, col) {
+            super(row, col);
+            this.shapes = [
+                [
+                    [0, 5, 5],
+                    [5, 5, 0]
+                ],
+                [
+                    [5, 0],
+                    [5, 5],
+                    [0, 5]
+                ]
+            ];
+            this.shape = this.shapes[0];
+        }
+    }
+    SShape.color = "rgb(0, 255, 0)";
 
-        [[2, 2, 2],
-            [0, 0, 2]]
-    ];
-    JShape.color = "rgb(63, 81, 181)";
-    class OShape extends Tetromino { }
-    OShape.shapes = [
-        [[3, 3],
-            [3, 3]],
+    class ZShape extends Tetromino {
+        constructor(row, col) {
+            super(row, col);
+            this.shapes = [
+                [
+                    [6, 6, 0],
+                    [0, 6, 6]
+                ],
+                [
+                    [0, 6],
+                    [6, 6],
+                    [6, 0]
+                ]
+            ];
+            this.shape = this.shapes[0];
+        }
+    }
+    ZShape.color = "rgb(255, 0, 0)";
 
-        [[3, 3],
-            [3, 3]],
-
-        [[3, 3],
-            [3, 3]],
-
-        [[3, 3],
-            [3, 3]]
-    ];
-    OShape.color = "rgb(255, 235, 59)";
-    class TShape extends Tetromino { }
-    TShape.shapes = [
-        [[0, 4, 0],
-            [4, 4, 4]],
-
-        [[4, 0],
-            [4, 4],
-            [4, 0]],
-
-        [[4, 4, 4],
-            [0, 4, 0]],
-
-        [[0, 4],
-            [4, 4],
-            [0, 4]]
-    ];
-    TShape.color = "rgb(156, 39, 176)";
-    class SShape extends Tetromino { }
-    SShape.shapes = [
-        [[0, 5, 5],
-            [5, 5, 0]],
-
-        [[5, 0],
-            [5, 5],
-            [0, 5]],
-
-        [[0, 5, 5],
-            [5, 5, 0]],
-
-        [[5, 0],
-            [5, 5],
-            [0, 5]]
-    ];
-    SShape.color = "rgb(76, 175, 80)";
-    class ZShape extends Tetromino { }
-    ZShape.shapes = [
-        [[6, 6, 0],
-            [0, 6, 6]],
-
-        [[0, 6],
-            [6, 6],
-            [6, 0]],
-
-        [[6, 6, 0],
-            [0, 6, 6]],
-
-        [[0, 6],
-            [6, 6],
-            [6, 0]]
-    ];
-    ZShape.color = "rgb(183, 28, 28)";
-    class IShape extends Tetromino { }
-    IShape.shapes = [
-        [[7],
-            [7],
-            [7],
-            [7]],
-
-        [[7, 7, 7, 7]],
-
-        [[7],
-            [7],
-            [7],
-            [7]],
-
-        [[7, 7, 7, 7]]
-    ];
-    IShape.color = "rgb(0, 188, 212)";
+    class IShape extends Tetromino {
+        constructor(row, col) {
+            super(row, col);
+            this.shapes = [
+                [
+                    [7],
+                    [7],
+                    [7],
+                    [7]
+                ],
+                [
+                    [7, 7, 7, 7]
+                ]
+            ];
+            this.shape = this.shapes[0];
+        }
+    }
+    IShape.color = "rgb(0, 255, 255)";
 
     const game = new Game();
-
-    window.addEventListener('keydown', (event) => {
-        switch (event.keyCode) {
-            case 37:
-                game.tryMoveLeft();
-                break;
-            case 39:
-                game.tryMoveRight();
-                break;
-            case 38:
-                game.tryRotating();
-                break;
-            case 40:
-                game.tryMoveDown();
-                break;
+    game.currentTetromino = game.randomTetromino();
+    game.play();
+    window.addEventListener("keydown", (event) => {
+        if (!game.isGameOver) {
+            switch (event.key) {
+                case "ArrowUp":
+                    game.tryRotating();
+                    break;
+                case "ArrowDown":
+                    game.tryMoveDown();
+                    break;
+                case "ArrowLeft":
+                    game.tryMoveLeft();
+                    break;
+                case "ArrowRight":
+                    game.tryMoveRight();
+                    break;
+                case " ":
+                    game.moveToBottom();
+                    break;
+            }
         }
-    });
-
-    document.addEventListener('DOMContentLoaded', () => {
-        game.currentTetromino = game.randomTetromino();
-        game.updateCurrentBoard();
-        game.draw();
-        game.play();
     });
 </script>
 </body>
