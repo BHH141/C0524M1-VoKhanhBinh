@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    function CheckStr(str) {
+        let CountUpperCase = 0;
+        for (let count = 0; count < str.length; count++) {
+            if (str[count] === str[count].toUpperCase()) {
+                CountUpperCase++;
+            }
+        }
+        if (CountUpperCase === 0) {
+            document.write("The Strings is not contain upper char");
+        } else {
+            document.write(CountUpperCase)
+        }
+    }
+    let str=prompt("Nhập vào 1 chuỗi:");
+    CheckStr(str)
+</script>
+</body>
+</html>

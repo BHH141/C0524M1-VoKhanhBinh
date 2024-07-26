@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    function FindPrime(arr){
+        let Prime=[]
+        for(let count1=0;count1 < arr.length;count1++){
+            let divisible=0;
+            if(arr[count1] === 2){
+                Prime.push(arr[count1])
+                continue;
+            }
+            for(let count2=2;count2 < arr[count1];count2++){
+                if(arr[count1] % count2 === 0){
+                    divisible++;
+                }
+            }
+            if(divisible === 0){
+                Prime.push(arr[count1]);
+            }
+        }
+        Prime.sort((a, b) => a - b);
+        document.write(Prime)
+    }
+    let arr=[];
+    let n=parseInt(prompt("Nhập số phần tử muốn nhập"))
+    for (let count = 1; count < n + 1; count++) {
+        let value = parseInt(prompt(`Nhâ phần tử số ${count}`));
+        arr.push(value);
+    }
+    FindPrime(arr)
+</script>
+</body>
+</html>

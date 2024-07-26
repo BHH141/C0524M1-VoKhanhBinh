@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<button onclick="addPhone()">Add</button><br>
+<button onclick="displayPhones()">Display</button><br>
+<a id="main"></a>
+<script>
+class Phone{
+    constructor(phoneCode,name,firm,price) {
+        this.phoneCode=phoneCode;
+        this.name=name;
+        this.firm=firm;
+        this.price=price;
+    }
+    get Code(){
+        return this.phoneCode;
+    }
+    set Code(value){
+        this.phoneCode=value;
+    }
+    get Name(){
+        return this.name;
+    }
+    set Name(value){
+        this.name=value;
+    }
+    get Firm(){
+        return this.firm;
+    }
+    set Firm(value){
+        this.firm=value;
+    }
+    get Price(){
+        return this.firm;
+    }
+    set Price(value){
+        this.firm=value;
+    }
+    toString(){
+        return `Tên điện thoại là ${this.name} có mã là ${this.phoneCode} hãng ${this.firm} giá: ${this.price}`
+    }
+}
+let arrPhone=[]
+function addPhone(){
+    let phoneCode=prompt("Nhập mã điện thoại:");
+    let name=prompt("Nhập tên điện thoại:");
+    let firm=prompt("Nhập hãng:");
+    let price=+prompt("Nhập giá tiền:");
+    let newPhone=new Phone(phoneCode,name,firm,price);
+    arrPhone.push(newPhone);
+}
+function displayPhones(){
+    for(let count=0;count<arrPhone.length;count++){
+        let displayContent = arrPhone.map(phone => phone.toString()).join('<br>');
+        document.getElementById("main").innerHTML = displayContent;
+    }
+}
+</script>
+</body>
+</html>
